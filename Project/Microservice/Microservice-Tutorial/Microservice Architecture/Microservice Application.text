@@ -1,0 +1,70 @@
+Question: What are microservices architecture?
+Answer: While monolithic application work as single component, a microservice architecture breaks it down to independent
+standalone small applications where each serving one particular requirement.
+
+Example: 1 microservice for handling all vaccination center operations and 1 for handling all user base registration.
+
+Within this microservice architecture the entire functionality is split into independent, deployable module which
+communicate communicate with each other through API(RESTful web services)/ messaging.
+
+General workflow: Generally we used to have one UI - user interface(HTML/CSS/JavaScript/Angular) from which incoming
+request arises and then it goes to the API(Application Programming Interface) gateway layer. API gateway routes the
+request to the particular web-service(microservice) depending upon the routing functionalities which we have given in
+the API gateway. These microservices - each web-services may have different databases having their own tables.
+
+Eureka Service: We are also going to have eureka service for service discovery.
+
+Eureka Server: is an application that holds the information about all client-service applications. Every Micro service
+will register into the Eureka server and Eureka server knows all the client applications running on each port and IP
+address. Eureka Server is also known as Discovery Server.
+
+Question: How microservices communicate with each other?
+Answer: The most common type is single-receiver communication with a synchronous protocol like HTTP/HTTPS when
+invoking a regular Web API HTTP service. Microservices also typically use messaging protocols for asynchronous
+communication between microservices.
+
+Question: API Gateway: what is api gateway in microservices?
+Answer: An API gateway is a software application between a client and a set of backend microservices. The API Gateway
+serves as a reverse proxy to accept API calls from the client application, forwarding this traffic to the
+appropriate service.
+
+Question: Why API gateway is required in microservices?
+Answer: The API Gateway offers a reverse proxy to redirect or route requests (layer 7 routing, usually HTTP requests)
+to the endpoints of the internal microservices. The gateway provides a single endpoint or URL for the client apps and
+then internally maps the requests to a group of internal microservices.
+
+What is an example of API gateway microservices?
+Image result for what is api gateway in microservices
+The popular example of API Gateway is Netflix API Gateway. The Netflix streaming services are available on hundreds of
+different kinds of devices such as televisions, set-top boxes, smartphones, tablets, etc. It attempts to provide a
+one-size-fits-all API for its streaming service.
+
+Which API gateway does Netflix use?
+A zuul proxy is used as an API gateway which receives all the incoming requests to the system and calls corresponding
+underlying microservice based on the configurations.
+
+Netflix/zuul: Zuul is a gateway service that provides dynamic routing, monitoring, resiliency, security, and more.
+
+Advantages of microservices:
+i) All the microservices are independent of each other. Therefore testing and deployment is easier as compare to
+monolithic application.
+ii) If there is a bug in one microservice then it has an impact on one particular microservice only and it does not
+affect the entire application.
+Example: Even if our vaccination center service is down, we still have our user base registration service up and running.
+iii) In microservice architecture, it's easy to build complex application.
+iv) In microservice architecture it give flexibility to choose technologies and framework for each microservice
+independently.
+
+Disadvantages of microservices:
+i) Increased Complexity of Communication.
+ii) Requires More Resources.
+iii) Global Testing and Debugging is Difficult.
+iv) Not Practical for Small Applications.
+
+
+
+
+
+
+
+

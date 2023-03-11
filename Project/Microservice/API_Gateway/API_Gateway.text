@@ -1,0 +1,15 @@
+Question: What is an API?
+Answer:An API gateway is a software application between a client and a set of backend microservices.
+The API Gateway serves as a reverse proxy to accept API calls from the client application, forwarding this traffic to the
+appropriate service.
+
+Question: How Gateway works?
+Answer:
+1. Clients make the request to Spring cloud API gateway.
+2. If the Gateway handler mapping determine that a request matches a route.
+3. It's send to the Gateway Web Handler.
+4. Web handler runs the request through the filter chain that is specific to the request.
+5. The reasons that filter is divided by the dotted line is that filter can run the logic before the proxy request is made and after the proxy request is made then the post filter logic is run.
+6. URI defined in routes without port get default port 80 for Http and 443 for https.
+
+

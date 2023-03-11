@@ -1,0 +1,42 @@
+Part 1:
+#Usecase Project: Vaccination Center & User Base.
+In order to implement above use case scenario we might have two approach/choices to do that
+
+1) Monolithic Application Architecture(Single Codebase) OR
+2) Microservices Application Architecture(Collection of Codebase).
+
+So, let's first understand the monolithic application architecture
+
+Question: What are monolithic application?
+Answer: In monolithic architecture the application is build as single unit.
+Such application comprises of 1) client-side interface, 2) server-side-backend-application and 3) database.
+Normally a monolithic application have one large code base and it lack modularity.
+
+Example:
+Take an example of vaccination center where user is registering themselves into Co-Win site(https://www.cowin.gov.in/).
+So, we might have below layers
+PC/System:
+Client(web-browser):Presentation Layer->Controller Layer->Business Layer(Service Layer)->Repository Layer -> DB
+
+Advantages of monolithic application:
+i) Easy to develop
+ii) Simple deployment
+iii) Uncomplicated testing and debugging
+
+Reference: https://www.openlegacy.com/blog/monolithic-application
+
+Disadvantages of monolithic application:
+i) The codebase will get larger with time and hence it's very difficult to manage.
+ii) It's difficult to introduce the new technology as it affects the whole application.
+iii) A single bug in any module can bring down the whole application.
+iv) It's very difficult to scale a single module. One has to scale the whole application.
+v) Continuous deployment is extremely difficult as large monolithic applications are actually an obstacle to frequent
+ deployments. In order to update one component we have to redeploy the entire application.
+
+
+
+
+
+
+
+

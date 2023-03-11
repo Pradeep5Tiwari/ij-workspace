@@ -1,0 +1,20 @@
+Question: How to start or convert a monolithic application to microservice application architecture?
+Answer: There are below steps which we can follow to convert monolith to microservice.
+Steps:
+1. If you have monolith application then first of all identify all standalone functionalities.
+2. Once you have identified them, then you need to create the standalone projects. (we are taking spring-boot to create these microservices)
+3. you need them to make interact with each other through some ways. It can be rest-api or messaging.(We are going to use the restful architecture for the same)
+4. But just doing this does not make sure that you have implemented microservice architecture. These are till now just
+two Restful web services. You still need below
+
+1) Load Balancer: A load balancer acts as the “traffic cop” sitting in front of your servers and routing client
+requests across all servers capable of fulfilling those requests in a manner that maximizes speed and capacity
+utilization and ensures that no one server is overworked, which could degrade performance.
+
+2) Eureka Service: This is useful during load balancing and cloud deployments.
+   The service discovery is implemented using Netflix OSS components. It provides Eureka, which is a Service Registry,
+   and Ribbon, which is an HTTP client that queries Eureka in order to route HTTP requests to an available service
+   instance. The @EnableEurekaClient annotation enables the Eureka client.
+
+3) API Gateway and many more stuff: software application layer between client and set of backend services.
+
