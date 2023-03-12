@@ -1,0 +1,95 @@
+Connection Pooling
+Reference:https://www.digitalocean.com/community/tutorials/connection-pooling-in-java
+
+Connection pooling means a pool of Connection Objects. Connection pooling is based on an object pool design pattern. Object pooling design pattern is used when the cost (time & resources like CPU, Network, and IO) of creating new objects is higher. As per the Object pooling design pattern, the application creates an object in advance and place them in Pool or Container. Whenever our application requires such objects, it acquires them from the pool rather than creating a new one.
+An application that uses a connection pooling strategy has already DB connection objects which can be reused. So, when there is a need to interact with the database, the application obtains connection instances from Pool. Connection pooling improves application performance that interacts with the database.
+
+We can create our own implementations of Connection pooling. Any connection pooling framework needs to do three tasks.
+Creating Connection Objects
+Manage usage of created Objects and validate them
+Release/Destroy Objects
+With Java, we have great set of libraries which are readily available. We only need to configure few properties to use them.
+
+Connection Pooling in Java Application
+Let’s have a look at below libraries:
+
+Apache Commons DBCP 2
+HikariCP
+C3P0
+Let’s have a look at below examples of them one by one. For demo purpose we will use MySQL database and Eclipse IDE. We will also create simple Java Project based on maven using JDK 1.8.
+create database empdb;
+
+use empdb;
+
+create table tblemployee(
+                    empId integer AUTO_INCREMENT primary key,
+                    empName varchar(64),
+                    dob date,
+                    designation varchar(64)
+);
+
+insert into  tblemployee(empId,empName,dob,designation) values (default,'Adam','1998-08-15','Manager');
+insert into  tblemployee(empId,empName,dob,designation) values (default,'Smith','2001-01-11','Clerk');
+insert into  tblemployee(empId,empName,dob,designation) values (default,'James','1996-03-13','Officer');
+
+
+create maven sample project
+Add below dependency in pom.xml
+ <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.32</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-dbcp2</artifactId>
+      <version>2.9.0</version>
+    </dependency>
+
+    Apache DBCP 2.0 provides two types of DataSource (BasicDataSource and PoolingDataSource).
+
+    BasicDataSource: As the name suggests, it is simple and suitable for most common use cases. It internally creates PoolingDataSource for us.
+
+    Let’s have a look at below steps to initialize connection pool.
+
+    Create an instance of BasicDataSource
+    Specify JDBC Url, database username and password
+    Specify the minimum number of idle connection ( Minimum number of connections that needs to remain in the pool at any time)
+    Specify the maximum number of idle connection (Maximum number of Idle connection in the pool)
+    Specify the total number of maximum connections.
+
+
+    PoolingDataSource: It offers more flexibility. You only need to change code which creates DataSource. The rest of the code will remain the same.
+
+    Let’s have a look at below steps to initialize connection pool:
+
+    Create an instance of ConnectionFactory using JDBC URL.
+    Create an instance of PoolableConnectionFactory using an instance of ConnectionFactory which was created in step 1
+    Create an instance of GenericObjectPoolConfig and set maximum idle, minimum idle and maximum connection properties
+    Now initialize ObjectPool using instances created in step 2 and step 3
+    Now set pool as an instance of PoolableConnectionFactory
+    Finally, initialize an instance of DataSource
+
+    private static DataSource dataSource = null;
+
+    	static {
+
+    		Properties properties = new Properties();
+    		properties.setProperty("user", "root");
+    		properties.setProperty("password", "root");
+
+    		ConnectionFactory connectionFactory = new DriverManagerConnectionFactory("jdbc:mysql://localhost:3306/empdb",
+    				properties);
+
+    		PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory, null);
+
+    		GenericObjectPoolConfig<PoolableConnection> config = new GenericObjectPoolConfig<>();
+    		config.setMaxTotal(25);
+    		config.setMaxIdle(10);
+    		config.setMinIdle(5);
+
+    		ObjectPool<PoolableConnection> connectionPool = new GenericObjectPool<>(poolableConnectionFactory, config);
+    		poolableConnectionFactory.setPool(connectionPool);
+
+    		dataSource = new PoolingDataSource<>(connectionPool);
+    	}
