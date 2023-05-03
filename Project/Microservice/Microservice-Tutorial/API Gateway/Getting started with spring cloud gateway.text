@@ -1,0 +1,73 @@
+Reference: https://cloud.spring.io/spring-cloud-gateway/reference/html/
+Spring Cloud Gateway: Spring Cloud Gateway aims to provide a simple, yet effective way to route to APIs and provide cross
+cutting concerns to them such as: security, monitoring/metrics, and resiliency.
+
+1. How to Include Spring Cloud Gateway
+To include Spring Cloud Gateway in your project, use the starter with a group ID of org.springframework.cloud and an
+artifact ID of spring-cloud-starter-gateway.
+See the Spring Cloud Project page for details on setting up your build system with the current Spring Cloud Release Train.
+
+If you include the starter, but you do not want the gateway to be enabled, set spring.cloud.gateway.enabled=false
+
+Important:
+Spring Cloud Gateway is built on Spring Boot 2.x, Spring WebFlux, and Project Reactor. As a consequence, many of the
+familiar synchronous libraries (Spring Data and Spring Security, for example) and patterns you know may not apply when
+you use Spring Cloud Gateway. If you are unfamiliar with these projects, we suggest you begin by reading their
+documentation to familiarize yourself with some of the new concepts before working with Spring Cloud Gateway.
+
+Spring Cloud Gateway requires the Netty runtime provided by Spring Boot and Spring Webflux. It does not work in a
+traditional Servlet Container or when built as a WAR.
+
+2. Glossary
+Route: The basic building block of the gateway. It is defined by an ID, a destination URI, a collection of predicates, and a collection of filters. A route is matched if the aggregate predicate is true.
+
+Predicate: This is a Java 8 Function Predicate. The input type is a Spring Framework ServerWebExchange. This lets you match on anything from the HTTP request, such as headers or parameters.
+
+Filter: These are instances of Spring Framework GatewayFilter that have been constructed with a specific factory. Here, you can modify requests and responses before or after sending the downstream request.
+
+3. How It Works
+The following diagram provides a high-level overview of how Spring Cloud Gateway works:spring_cloud_gateway_diagram.png
+
+Working: Clients make requests to Spring Cloud Gateway. If the Gateway Handler Mapping determines that a request matches
+a route, it is sent to the Gateway Web Handler. This handler runs the request through a filter chain that is specific to
+the request. The reason the filters are divided by the dotted line is that filters can run logic both before and after
+the proxy request is sent. All “pre” filter logic is executed. Then the proxy request is made. After the proxy request
+is made, the “post” filter logic is run.
+
+URIs defined in routes without a port get default port values of 80 and 443 for the HTTP and HTTPS URIs, respectively.
+
+4. Configuring Route Predicate Factories and Gateway Filter Factories
+There are two ways to configure predicates and filters: shortcuts and fully expanded arguments. Most examples below use the shortcut way.
+The name and argument names will be listed as code in the first sentence or two of the each section. The arguments are typically listed in the order that would be needed for the shortcut configuration.
+
+4.1. Shortcut Configuration
+Shortcut configuration is recognized by the filter name, followed by an equals sign (=), followed by argument values separated by commas (,).
+
+application.yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: after_route
+        uri: https://example.org
+        predicates:
+        - Cookie=mycookie,mycookievalue
+
+4.2. Fully Expanded Arguments
+Fully expanded arguments appear more like standard yaml configuration with name/value pairs. Typically, there will be a name key and an args key. The args key is a map of key value pairs to configure the predicate or filter.
+
+application.yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: after_route
+        uri: https://example.org
+        predicates:
+        - name: Cookie
+          args:
+            name: mycookie
+            regexp: mycookievalue
+This is the full configuration of the shortcut configuration of the Cookie predicate shown above.
+
+For more information you can follow the above reference links.
