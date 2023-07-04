@@ -1,0 +1,210 @@
+Demo Project: How to use Docker in a local development process.
+
+Prerequisites:
+
+Frontend = HTML + JavaScript
+Backend = NodeJs
+
+Database = MongoDB
+Database GUI = MongoDB Express - Through which we can see the database inside.
+
+Note: The Application which we are trying to develop has no persistent layers meaning its not saving anything we update in
+the user interface. The data is static.
+
+Code:
+Step 1: Create index.html(Frontend - HTML + JavaScript) file and write the code there.
+Step 2: Create the server.js(Backend -NodeJs) file and write the code to server the index.html
+Step 3: Start the Docker Engine and goto docker hub and download the mongoDB and mongo express UI images from there.
+Example: docker pull mongo and docker pull mongo-express
+Step 4: Now run both mongoDB and mongo express UI container in order to make mondoDB database available for application and
+        also to connect mongo express UI with mongoDB container.
+Step 5: Let's make a connection between mongoDB and mongo express UI first. But before we make connection between these two
+we need to understand the another concept "Docker Network".
+
+Docker Network: Docker create its 'isolated docker network' where the containers are running in. So, when we deploy two
+container(mongoDB + mongo express UI) in same 'isolated docker network' Like we have mongoDB and mongo express UI they
+both run in 'isolated docker network' and they both can communicate / talk to each other using just the 'container name'
+without localhost, port number etc. Just the container name because they are in same network.
+
+And the application that run outside of docker isolated network like our node js which runs from node server is gonna
+connect to them(mongoDB and mongo express UI) from outside or from the host machine using localhost and port number
+Example: Attached screenshot: screenshot/Communication_Localhost_DockerNetwork.png
+
+And later when we package our application into its own docker image, then what we are going to have is isolated docker
+network with mongoDB container and mongo express UI container. And we are going to have node js application which we wrote
+including the index HTML and JavaScript for frontend in its own docker container and its going to connect to mongoDB.
+
+And the browser which is running in the host but outside the Docker network is going to connect to out javascript
+application again using host name and port number.
+
+So, Docker by default already provides some networks so if we execute the command: "docker network ls" then we are
+going to get the list of docker networks which is auto generated.
+Example:
+pradeeptiwari@Pradeeps-MacBook-Pro Registration % docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+94fd5ee174ab   bridge    bridge    local
+b63ab76578e1   host      host      local
+3c5344b9aeac   none      null      local
+
+We can create our own network for this particular application using below command.
+Example: docker network create mongo-network
+
+pradeeptiwari@Pradeeps-MacBook-Pro Registration % docker network create mongo-network
+9c327c4805ae13f498bdc4ce8adc83f1e9ca52c2e7a061eea52089124e854f4d
+
+Now check whether our created network exist or not using command: docker network ls
+
+Example:
+pradeeptiwari@Pradeeps-MacBook-Pro Registration % docker network ls
+NETWORK ID     NAME            DRIVER    SCOPE
+94fd5ee174ab   bridge          bridge    local
+b63ab76578e1   host            host      local
+9c327c4805ae   mongo-network   bridge    local      ------> Our created network is here.
+3c5344b9aeac   none            null      local
+
+So now in order to make our mongoDB container in mongoexpress container in this created "mongo-network" network we have
+to provide this network option when we run the container in the docker run command.
+
+
+Run mongo containers:
+docker run -p 27017:27017 -d mongo
+Here:
+-d switch to run the mongo in de-attached mode
+27017 is the default port for mongoDB
+27017:27017 we provided this default port for both host and container
+
+you can refer https://hub.docker.com/_/mongo Environment Variables section to add other environmental variable.
+Like we want to add username and password for database then below variable need to add using -e switch
+Example:docker run -p 27017:27017 -d -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
+
+Now give the name to the container using --name switch
+Example:
+docker run -p 27017:27017 -d -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=secret --name mongodb mongo
+
+Again give the network name which we created earlier in which you want your mongodb to run.
+Example: docker run -p 27017:27017 -d -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=secret --name mongodb --net mongo-network mongo
+
+Now we can form a proper structure for above command
+====================================================================
+pradeeptiwari@Pradeeps-MacBook-Pro Registration % docker run -d \
+-p 27017:27017 \
+-e MONGO_INITDB_ROOT_USERNAME=mongoadmin \
+-e MONGO_INITDB_ROOT_PASSWORD=secret \
+--name mongodb \
+--net mongo-network \
+mongo
+=====================================================================
+After we hit the above command the below hashcode get generated
+2f8f50e5a757dfe94164770ff1357dfdc76ea160be4597dc6d3b1257fe050719
+
+Now if you want to see whether the executed command was successful or not you can via below command
+Example: docker logs 2f8f50e5a757dfe94164770ff1357dfdc76ea160be4597dc6d3b1257fe050719
+logs has been attached in the file: Docker mongo logs
+=======================================================================================================================
+Now lets start the mongo express: We want mongo express to connect to the running mongoDB container on startup
+Using below we should be able to connect mongo express to our running mongoDB container.
+Example:
+pradeeptiwari@Pradeeps-MacBook-Pro Registration % docker run -d \
+> -p 8081:8081 \            ---> 8081 is the default port for mongoexpress
+> -e ME_CONFIG_MONGODB_ADMINUSERNAME=mongoadmin \ ---> This environmental variable as admin username which we have set earlier for mongoDB
+> -e ME_CONFIG_MONGODB_ADMINPASSWORD=secret \ ---> This environmental variable as admin password which we have set earlier for mongoDB
+> --net mongo-network \ ---> The network which we created earlier.
+> --name mongo-express \ --> The name of the container which we are setting for mongo express
+> -e ME_CONFIG_MONGODB_SERVER=mongodb \ ---> This is the container name of mongoDB which we set earlier.
+> mongo-express
+=======================================================================================================================
+Now once we hit the above command this --> 26c063a9f199f0066318130692b33202bde567bcabdc867978bdb842d3f5a58c would get
+generated and we can check the logs as well for above executed command whether everything went okay or not.
+
+docker logs 26c063a9f199f0066318130692b33202bde567bcabdc867978bdb842d3f5a58c
+
+we can go for browser and check whether mongo express is accessible or not?
+Open browser and hit url: http://localhost:8081/ --> you should be seeing the mongo express home page with some existing
+databases like admin, config and local.
+
+We can create the new database from mongo-express database home page: Just type the database name and click on Create Database
+button and it will create the new database for you.
+Example: screenshot/user_account.png
+
+And now we can connect this newly created database user-account from NodeJs. Lets see how to do that?
+Lets first check: lets hit command: docker ps
+CONTAINER ID   IMAGE           COMMAND                  CREATED          STATUS          PORTS                      NAMES
+26c063a9f199   mongo-express   "tini -- /docker-ent…"   12 minutes ago   Up 12 minutes   0.0.0.0:8081->8081/tcp     mongo-express
+2f8f50e5a757   mongo           "docker-entrypoint.s…"   38 minutes ago   Up 38 minutes   0.0.0.0:27017->27017/tcp   mongodb
+
+Here we have two container which are running one for mongo database --> mongodb and another for mongo-express --> mongo-express.
+
+Now we have to connect to NodeJs with mongoDB database. So the way to do this is usually to give a protocol of the database
+and URI. And the URI for mongoDb database would be localhost and the port where its accessible. like
+as we can see above for mongoDb database: 0.0.0.0:27017->27017/tcp OR localhost:27017
+
+To run the node js application make sure that you have install the express.
+Example: npm install express
+Once it get install it will create the node_modules folder within the specified installed location.
+
+Make sure your project/application should be the same as we are pasing in server.js --> let registration = express();
+So, here registration is my project/application name and further in other places also call by the same name
+like given below i sever.js file.
+registration.use
+registration.get
+registration.post
+registration.listen
+=======================================================================================================================
+So, here we had:
+mongodb database running on mongodb container at 27017 port.
+'mongo-express' GUI based interface to access the database, create, insert and update. running at localhost:8081 port
+on 'mongo-express' container and registration node js application which is running on localhost:3000 port.
+
+we created "user-account" as database from 'mongo-express; GUI and then created 'users' collections under user-account
+database then if we edit the data via 'mongo-express' GUI then corresponding hashcode entries have been updated in users
+collection with updated fields information.
+
+mongo-express: http://localhost:8081/
+registration application: http://localhost:3000/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

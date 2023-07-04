@@ -1,0 +1,17 @@
+pradeeptiwari@Pradeeps-MBP Registration % docker build -t my-registration:1.0 .
+[+] Building 40.2s (9/9) FINISHED
+ => [internal] load build definition from Dockerfile                                                                                                                   0.0s
+ => => transferring dockerfile: 219B                                                                                                                                   0.0s
+ => [internal] load .dockerignore                                                                                                                                      0.0s
+ => => transferring context: 2B                                                                                                                                        0.0s
+ => [internal] load metadata for docker.io/library/node:13-alpine                                                                                                     39.9s
+ => [auth] library/node:pull token for registry-1.docker.io                                                                                                            0.0s
+ => [1/3] FROM docker.io/library/node:13-alpine@sha256:527c70f74817f6f6b5853588c28de33459178ab72421f1fb7b63a281ab670258                                                0.0s
+ => [internal] load build context                                                                                                                                      0.1s
+ => => transferring context: 530.82kB                                                                                                                                  0.1s
+ => CACHED [2/3] RUN mkdir -p /home/registration                                                                                                                       0.0s
+ => [3/3] COPY . /home/registration                                                                                                                                    0.2s
+ => exporting to image                                                                                                                                                 0.1s
+ => => exporting layers                                                                                                                                                0.1s
+ => => writing image sha256:f1836c8d25fd2616b6e5dec4cde8b2f9fb6acdbedd6cd39b3cba62c8637d6e28                                                                           0.0s
+ => => naming to docker.io/library/my-registration:1.0

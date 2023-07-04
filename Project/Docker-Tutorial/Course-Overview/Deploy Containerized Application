@@ -1,0 +1,63 @@
+Deploy Containerized Application:
+Overview:
+* Image From Private Repository
+* Deploy Multiple Container
+* Deploy Server
+
+After we package our application into docker image and save it in private repository (AWS ECR) you need to somehow
+deployed on development server / Integration server/ Any other environment.
+
+and we are going to use docker compose to deploy that application.
+
+Lets assume that we have logged in to development server and we want to run our image that we just pushed to private
+repository(my-Registration)  with mongodb database and mongo-express on the development server.
+
+So my-registration application will be pulled from the private repository of AWS and mongodb + mongo-express will pulled
+from the docker hub. So let see how this work.
+
+In order to start the application on development server you would need all the containers that make up the application
+environment.
+So in mongo.yaml under services section we are going to add the application image from private repository. Now lets
+copy the image uri from aws ecr like (146341542837.dkr.ecr.ap-south-1.amazonaws.com/my-registration)
+
+Example:
+  services:
+    my-registration:
+      image:146341542837.dkr.ecr.ap-south-1.amazonaws.com/my-registration
+
+
+in mongo.yaml file the mongo image is pulling from docker hub that is why we are just adding "mongo" and not providing
+complete name along with repository Domain. Since its from docker hub we can just skip the repository name and can give
+only image name "mongo".
+
+But here as we are pulling from private repository we have to specify with repository domain otherwise if we not give
+repository name then Docker will think that our image resides on Docker hub. It will try to find from docker hub which
+it won't find.
+Here we are specifically telling docker to look at this particular repository name with mentioned tag.
+
+In order to be able to pull this image the environment where you are executing this docker compose file has to be logged
+into a docker repository.
+So here is the development server has to pull the image from the repository what we would need to do on the development
+server is actually do a docker login before we execute the docker compose. And obviously you don't need docker login.
+And those mongo images will be pulled freely.
+Next thing we have to configure is port because we want to open the ports. As we can see that our application is running
+on port 3000 so container is listening on 3000 so we can open the ports on host machine like 3000:3000. So its 3000 host
+port mapped to container port 3000.
+
+We have environment variable inside Dockerfile but we can configure it inside mongo.yaml which is docker-compose file.
+
+Now we have complete 'Docker-Compose' file called mongo.yaml that would be used on the server to deploy all the
+applications/services. So, if we are trying to simulate a development server that the first step will be to do the
+docker login.
+So we have below command from aws ecr command to logging into aws ecr repository.
+aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 146341542837.dkr.ecr.ap-south-1.amazonaws.com
+
+Now next step is to have Docker-Compose file(mongo.yaml) available on this development server because we have to execute
+the Docker-Compose file because we are simulating here the way we would do it is to create the mongo.yaml file in the
+current directory where I am in the terminal current directory.
+
+
+
+
+
+

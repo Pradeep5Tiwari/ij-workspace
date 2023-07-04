@@ -1,0 +1,124 @@
+Overview:
+* What is docker volume?
+* When do we need docker volumes?
+* 3 Volume Types?
+* Docker Volume in docker-compose file?
+
+* Docker Volume: are used for data persistence in docker.
+Example: If you have database or any other stateful application you would want to use docker volume for that
+
+* When do we need docker volume?
+Example: So container runs on host.
+Lets say we have database container and container has virtual file system. i.e. /var/lib/mysql/data
+where the data is virtually stored. But here there is no persistence so if I were to remove the container or stop or
+restart the container then the data in this virtual file system is gone. and it starts from fresh state.
+which is obviously not very practical because we want to save the changes that my application is making in the database.
+and that's where I need volumes or Docker volume.
+
+So, on host we have physical file system (home/mount/data) and the way volumes work is that we plug the physical file
+system path and it could be a folder /a directory and we plug it into the containers file system.
+
+In simple term a directory folder on a host file system is mounted into a directory of folder in the virtual file system.
+of docker. So what happens when container writes to its file system its get replicated or automatically written on the host
+file system directory and vice versa. So If I were to change something on the host file system then it automatically appears
+in the container as well. So that why when a container restarts even if its starts from a fresh state in its virtual file
+system, it gets data automatically from the host because the data is still there.
+
+and that's how data is populated on the startup of the container and everytime you restart.
+
+* 3 Volume types:
+There are 3 different type of docker volume. and different ways of creating docker volumes.
+
+1) Host Volume: First Type is usually the way to create the Docker volumes is using the Docker Run command.
+so in docker run there is a option called -v and this is where we define the connection or reference between the host
+directory and the container directory and this type of volume definition is called host volume.
+
+Example: Host Volume:
+ docker run -v /home/mount/data:/var/lib/mysql/data
+
+And the main characteristics of this one is that you decide where one the host file system the reference is made.
+Which folder on the host file system you mount into the container.
+
+2) Anonymous Volume: Second Type is where you create a volume just by referencing the container directory. (var/lib/mysql/data).
+So you don't specify which directory in the host should be mounted. But that's taking care of the docker itself.
+So that directory is first of all automatically created by docker under the var/lib docker volumes.
+
+* For each container a folder is generated that gets mounted to the container.
+Example: Host----->Container----->/var/lib/mysql/data
+command: docker run -v /var/lib/mysql/data
+
+3) Named Volumes: Third Type of volume is actually improvement of anonymous volume. it specifies the name of that folder on the host
+file system. and the name is up to you. It just reference the directory and that type of volumes are called named volumes.
+* In Named Volumes you can reference the volume by name.
+
+Example: Host----->Container----->/var/lib/mysql/data
+command: docker run -v name:/var/lib/mysql/data
+
+Note: So, in this 3 type of volumes the mostly used one and the one that you should be using in a production us
+actually the "Named volumes". Because there are additional benefits to letting docker actually manage those volume
+directories on the host.
+
+Using docker-compose also its same to create the docker volumes.
+
+
+Example: Below docker volumes in docker-compose file using Named Volume.
+******************************************
+version: 3
+services:
+ mongodb:
+    image: mongo
+    ports:
+     - 27017:27017
+    volumes:
+     - db-data:/var/lib/mysql//data
+ mongo-express:
+    image: mongo-express
+Volumes:
+ db-data              ---> Here you can define the list of volumes that you want to mount to the container.
+******************************************
+Note: Here in docker-compose file "db-data" is named volume. You can have any name.
+
+
+Whenever we want to persist the data in the container we used "Named Volume" inside of the "docker-compose" file like
+(mongo.yaml or docker-compose.yaml).
+Defined Named Volumed in Docker Compose File. Like we have given Named Volume in docker.compose.yaml file.
+We have given 'mongo-data' as Named-Volume in my container.
+1) host-volume-name ----> mongo-data along with driver.
+2) path-inside-of-the-container ----> Under mongodb we have given
+
+#- /data/db --> This is the default path created by mongodb inside container.
+#- /var/lib/my-db
+#- my-db:/var/lib/mysql/data
+#- var/lib/mysql ---> This path is for mysql database.
+#- var/lib/postgresql/data ---> This path is for post-gre database.
+#- Note: These path differs for each database.
+
+Question: Where Docker Volumes are located?
+Answer: Docker Volume Locations: Docker Volume are located in our local machine. and that differs between different OS.
+For Windows OS the path would be: C:/ProgramData\docker\volumes
+For Linux OS the path would be: var/lib/docker/volumes
+For Windows OS the path would be: var/lib/docker/volumes
+
+Inside this volumes directory you would have list of all the volumes that one or many container is using. And each
+volumes has its own hash(cfc1ab...ddf22/_data) which has to be unique and then "_data" actually contain all the files
+and data that is persisted.
+
+If you hit the command "ls /var/lib/docker" in linux you would get the path and corresponding location but in mac OS
+the case if different. So basically what happen is Docker for Mac application create a linux virtual machine and stores
+all the Docker data here. So if you execute below command
+command : screen ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/tty
+This is basically the physical storage og my mac where all the data is stored.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

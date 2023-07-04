@@ -1,0 +1,124 @@
+************************************************DOCKER****************************************************************
+
+Question: What is Docker?
+Answer: Docker is a "virtualization software" that makes developing and deploying applications much easier.
+Much easier that how it was done before.
+
+Docker does that by packaging application with all necessary dependencies, configuration, system tools and runtime.
+
+It has something called "container" a standardized that has everything the application needs to run.
+
+Example: For an application like Application Code + Library + Dependencies and also the runtime environment configuration.
+So, application and its running environment are both packaged into single "Docker Package" which can easily share and
+distribute.
+
+Question: Why is this a big deal and how are applications actually developed and deployed before docker was introduced?
+Answer: Now lets understand the benefits of Docker more clearly.
+
+[#] DEVELOPMENT Process before containers? How did we develop application before containers?
+i) Each developer needs to "install and configure" all services directly on their OS on their local machine:-
+   Usually when you have team of developers working on some application they would have to install all the services that
+   application depends on or needs like database services etc. directly on their operating system. Like if you are working
+   on some javascript application and you need a postgresql database, may be you need redis for caching, mosquito for
+   messaging like if you have microservices application now you need all these services locally on your development
+   environment so you can actually develop and test the application.
+   So, using traditionally below point need to be noted that
+
+   * Installation process different for each OS environment.
+   * Many steps where something can go wrong.
+
+So, overall process could be tedious depending on how complex your application is for example if you have 10 services
+that your application is using then you would have to do that installation 10 times for each service and again it will
+differ within the team based on what OS each developer is using.
+
+Now see how containers solve some of these above problem?
+i) Own Isolated Environment:- So, with container you do not have to install any of these 10 services directly on your
+                              OS because with Docker you have that service packaged in one isolated environment.
+
+ii) PosGreSql packaged with all dependencies and configs:- So you have postgresql with a specific version packaged with
+its whole configuration inside of a container.
+
+iii) Start service as a Docker container using a 1 Docker command:- So, as a developer you don't have to go and look for some binaries to
+download and install on your machine but rather you just go ahead and start that service as a Docker Container using a
+single Docker command which fetches the container package from internet and starts it on your computer.
+
+iv) Command same for all OS:- Docker command will be the same regardless of which operating system you are on.
+v) Command same for all services:- It will also be same regardless of which service you are installing.
+
+Example: docker run posgresql
+         docker run redis
+         docker run
+vi) Easy to run different versions of same app without any conflicts. like redis 3.9, redis 4.1 and redis 4.3
+
+
+[#] DEPLOYMENT process before containers?
+i) Artifact and Instructions handed over to Operation Team.
+ii) OPERATIONS_TEAM handles installing and configuring application and its dependencies.
+
+Before containers a traditional deployment process would look like this development team will produce an application
+artifact or package together with setup installation instructions like "how to install & configure app on the server"
+So, you would have something like jar files/java application/something similar depending on the programming language and
+in addition of-course you will have something kind of database service that your application needed.
+So, DEVELOPMENT_TEAM will give that application artifact package over to OPERATIONS_TEAM and OPERATIONS_TEAM will handle
+installing and configuring the application and all its dependencies services like databases.
+
+ Traditional Flow:---> [DEVELOPMENT_TEAM]---> [Artifact + Installation Instructions]--->[OPERATIONS_TEAM]---> [Server]
+
+* Installations and configurations done directly on the server OS:- So now the problem with above this approach is that
+first of all you need to configure everything and install everything again indirectly on the operating system which I
+mentioned in the development context that is actually very error prone and you can have various different problems
+during the setup process you can also have conflicts with dependency versions where two services are depending on the
+library for example but with different versions and when that happens it's going to make the setup process way more
+difficult and complex so basically a lot of things that can go wrong when operations team is installing ans setting up
+application any services on a server.
+
+* Miscommunication:- Another problem that could arise from this kind of process is when there is a
+miscommunication between the DEVELOPMENT_TEAM and OPERATIONS_TEAM because since everything is in textual guide like
+instruction list of how to configure and run the application or may be some kind of checklist there could be cases
+where developers forget to mention some important steps about configuration and when then parts fails the operations
+team have to go back to developers and ask for more details and input and this could lead to some back and forth
+communication until the application is successfully deployed on the server. So, basically you have this additional
+communication overhead where developers have to communicate in some kind of textual graphical whatever format how the
+application should run.
+
+* No configurations needed on the server(Except Docker Runtime):
+* Docker Artifact includes everything in the app needs:- BUT with containers this process simplified because now developer
+create an application package that does not include the code itself but also all the dependencies and the configuration
+for the application.
+
+* Less room for errors:-
+So, instead of having to write that in some textual format and document they basically just package all of that inside
+the application artifact and since its already encapsulated in one environment the operations that people don't have to
+configure any of this stuff directly on the server so it makes the whole process way easier and there is less room for
+issues that I mentioned previously.
+
+* RUN the docker command to fetch and run the Docker artifacts:- So, only thing now that OPERATIONS_TEAM need to do in
+this case is to run a docker command that gets their container package that developer created and runs on server.
+The same way OPERATIONS_TEAM run any services that application needs also as Docker containers and that makes the
+deployment process way easier on the operation side. Now the OPERATIONS_TEAM has to setup, install all the setup the
+docker runtime on the server before they will be able to run containers but that is just one time effort for one service
+or one technology and once you have docker runtime installed then you can simply runs docker container on that server.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

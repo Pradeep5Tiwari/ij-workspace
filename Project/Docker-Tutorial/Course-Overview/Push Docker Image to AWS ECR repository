@@ -1,0 +1,105 @@
+Overview:
+* Docker private repository
+* Registry options
+* Build and Tag an image.
+* Docker login
+* Docker Push
+
+Below are some step which will push docker image to AWS ECR repository.
+
+1) Create private Docker repository on AWS: The first step is to create the "private repository" for docker and it
+is also called Docker Registry.
+Here we are going to create private repository on AWS.
+Step 1: Go to https://aws.amazon.com/
+Step 2: Sign-in into your aws account.
+Step 3: Go to Services section and select/type ECR in the search bar.
+Step 4: Click on 'repositories' and provide the name to your private 'my-registration' registry and click on 'Create'.
+Step 5: Select the checkbox of your private repository and click on "View Push Commands". You would see the commands to
+push your registry.
+Step 6: You always have to login to private repository = docker login. Because you have to authenticate yourself.
+So, if you are pushing from your local machine then you have to tell that private repository that you have access to it.
+If docker image is built and push from the jenkins server then you have to give jenkins credentials to login into repository.
+So, "docker login" is the first step you need to do.
+Here In "View Push Commands" aws provides a docker login commands for aws. it's slightly different from "docker login".
+
+Pre-Requisites:
+1) AWS CLI needs to be installed.
+2) Credentials Configured.
+
+We would have to place my-registration into my-registration created private repository in aws account.
+REPOSITORY                     TAG                IMAGE ID       CREATED        SIZE
+my-registration                1.0                1db6721bd06a   16 hours ago   126MB
+
+Credentials Configuration: Configure AWS CLI:
+pradeeptiwari@Pradeeps-MBP ~ % aws --version                         ---> command to check installed aws cli version
+aws-cli/2.12.6 Python/3.11.4 Darwin/21.6.0 exe/x86_64 prompt/off     ---> Installed aws cli version
+pradeeptiwari@Pradeeps-MBP ~ % aws configure                         ---> Command to configure aws
+AWS Access Key ID [None]: AKIASEEVCXO25MTD56N7                       ---> Set the access key ID
+AWS Secret Access Key [None]: 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 ---> Set the Secret Access Key
+Default region name [None]: ap-south-1                                 ---> Set the region for Mumbai
+Default output format [None]: json                                     ---> Output format you want to be display.
+
+once you configured your aws cli credential you would have hidden folder called .aws
+which can be access by command "ls -a" and inside .aws folder you would have two file
+1) config   ---> aws cli region
+2) Credentials --> Access ID and Secret Access Key
+
+Note: You can add your profile here as well, by-default there will be default profile get created.
+
+To login into asw cli using mac terminal:
+aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 146341542837.dkr.ecr.ap-south-1.amazonaws.com
+
+Example:
+pradeeptiwari@Pradeeps-MBP ~ % aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 146341542837.dkr.ecr.ap-south-1.amazonaws.com
+Login Succeeded
+
+Logging in with your password grants your terminal complete access to your account.
+For better security, log in with a limited-privilege personal access token. Learn more at https://docs.docker.com/go/access-tokens/
+
+Image Naming in Docker Registries: registryDomain/imageName:tag
+In DockerHUB normally we don't give such above name instead we just use "docker pull mongo:4.2" to fetch any images
+without having to specify the registryDomain.
+Actually docker pull docker .io/library/mongo:4.2 run in behind giving docker pull mongo:4.2 command.
+where docker.io/library ---> registry domain name
+                mongo ---> is image name.
+                4.2   ---> tag name.
+
+in AWS ECR: we are going to provide the full registry domain name of repository like
+Example: "docker pull 146341542837.dkr.ecr.ap-south-1.amazonaws.com/my-registration:1.0"
+
+If we give "docker push my-registration:1.0" Here docker would not know to which repository we are trying to push and
+by default it will push to the DockerHUB. But it's not gonna to work obviously because we want to push my-registration
+application to the AWS.
+
+So, in order to tell the docker that we want this image to be push to aws repository with name my-registration, we have
+to tag the image or we have to include that information in the name of the image.
+
+tag means we are renaming our image to include repository name or the address and the image name.
+docker tag = rename the image.
+
+Example: docker tag my-registration:1.0 146341542837.dkr.ecr.ap-south-1.amazonaws.com/my-registration:1.0
+
+Now the image from my-registration will rename as 146341542837.dkr.ecr.ap-south-1.amazonaws.com/my-registration
+
+Now to push the image: docker push 146341542837.dkr.ecr.ap-south-1.amazonaws.com/my-registration:1.0
+
+here image my-registration with tag 1.0 will get push into aws repository at that particular region address.
+
+Example:
+pradeeptiwari@Pradeeps-MBP registration % docker push 146341542837.dkr.ecr.ap-south-1.amazonaws.com/my-registration:1.0
+The push refers to repository [146341542837.dkr.ecr.ap-south-1.amazonaws.com/my-registration]
+0b8ec55eaa37: Pushing [=======>                                           ]  1.562MB/11.14MB
+c5936c2fd391: Pushed
+0a454283a2a4: Pushed
+0251486b80af: Pushing [==================================================>]  7.727MB
+8940ae814902: Pushing [=========>                                         ]  18.91MB/101.3MB
+678a0785e7d2: Pushing [==================================================>]  5.624MB
+
+After some time the below status
+0b8ec55eaa37: Pushed
+c5936c2fd391: Pushed
+0a454283a2a4: Pushed
+0251486b80af: Pushed
+8940ae814902: Pushed
+678a0785e7d2: Pushed
+1.0: digest: sha256:2101c6aebafc02cacc23461e3f7c1c7b0f431e410bee18a455f1eb8e8f1fc7ea size: 1576

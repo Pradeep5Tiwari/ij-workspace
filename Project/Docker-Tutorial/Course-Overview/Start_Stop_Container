@@ -1,0 +1,18 @@
+Start and Stop Container:-
+
+Docker "run" command actually create a new container everytime. it does not reuse the container that we created previously.
+which means since we executed docker run command couple of time then we should have couple of container on our computer.
+However if we check using "docker ps" command we would see only running container. I don't see those container which we
+have created and stopped but those containers actually still exist.
+
+So if we do execute command:- "docker ps -a" --> This would give you the list of all containers whether they are running
+or stopped. so there could be a container having different status like "Running" OR "Exited"
+
+Note: You can remember a container by tis name than the id.
+
+
+To give a specific name to the newly creating container using flag "--name container_name"
+
+
+
+

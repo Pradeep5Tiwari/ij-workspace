@@ -1,0 +1,36 @@
+Demo Project Overview:
+1) Development
+2) Continuous Integration / Delivery
+3) Deployment.
+
+Workflow with Docker:
+Lets assume you are developing a javascript application in your local development environment in laptop/PC.
+Your Javascript application uses MongoDB database and instead of installing it in your laptop you download docker container
+from docker hub. So, you connect javascript application with mongoDB and you start developing.
+
+Lets assume you developed first version of your application in locally in your IDE and now you want to deploy application
+to some other testing environment where tester team is going to test it.
+So, you commit your javascript application in Git version control system and that will trigger continuous Integration
+using Jenkins Build and jenkins build will produce the artifact from your application.
+
+So first you will build your javascript application and then create the Docker image out of that javascript artifact.
+so, what happen to this javascript image once it get created by jenkins build, It gets push to private Docker Registry.
+Now next steps could be configured on jenkins or some other tools that docker image has to be deployed on a development
+server. So you have development server that pulls the image from private repository(JS + Docker Image).
+
+It pulls your javascript application and MongoDB that your javascript application depends on from docker hub.
+Now you have two container one is your custom container and another one is publicly available mongoDB container running
+on dev server. They talk to each other and you have to configure it of course they talk and communicate each other and
+run as application.
+
+So now if Tester for example or developer logs in to a dev server then they will be able to test the application.
+So, this is simplified workflow. How docker will work in a real life development process.
+
+
+
+
+
+
+
+
+

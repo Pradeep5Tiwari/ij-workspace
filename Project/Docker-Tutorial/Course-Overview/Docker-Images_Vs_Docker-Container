@@ -1,0 +1,57 @@
+* Package everything into an artifact which can be easily shared and moved.
+
+As we have mentioned earlier that docker allow to package application with its environment configuration that you can
+shared and distribute easily.
+Example: Like a zip/tar/jar file. --> which you can upload to artifact repository/storage and then download on server
+locally whenever you need it. And then package / artifact we produce with docker called a "Docker Image".
+
+Docker Image:- It's basically an executable application artifact but different from the jar file or other application artifact.
+               It's includes application source code, and also "complete environmental configuration".
+Example: Application(JS APP) + Any Services Needed(node,npm OR java,jre) + OS Layer(Linux) + you can also add the
+environment variables, create directories, files etc.
+So, all and every single information will be packaged into docker images. Docker image = docker package.
+
+
+
+Docker Container:- Once we develop application then well we need to start that application package somewhere right?
+                   so when we take that package or image and download it to the server or your local computer laptop then
+                   we want to run it on that computer / laptop and application has to actually run. And when we run that
+                   image on an operating system and application inside starts in pre-configured environment that gives
+                   us a container so a running instance of an image is container.
+
+                   So, "container is basically a running instance of an image". And from same image from one image you
+                   can run multiple containers which legitimate use case if you need to run multiple instances of this
+                   same application for increased performance.
+                   Example: Images - this is what we were seeing in docker when we started. These images are packages
+                   and from those images we can start the containers which we will see listed right in the containers
+                   section which are running instances of those images. So, it's clear that we get container by
+                   running images
+
+Docker CLI:- If we wants to work with docker CLI then simply open the terminal and type anything something like if we
+             want to see the list of images locally then simply type: "docker images" and it will give you a list of
+             images like REPOSITORY TAG IMAGE ID TAG CREATED SIZE
+
+             "docker ps" --> to check any running docker process.
+
+
+Difference: Image and container:
+
+CONTAINER is a running environment for IMAGE.
+CONTAINER = File System + Environment Config + Application Image
+CONTAINER: File system is virtual in container
+CONTAINER: Also does port binding it talk to application running inside of container.
+
+Application Image: It's just a artifact just like postgres, redis, mongodb.
+
+
+
+
+
+
+
+
+
+
+
+
+

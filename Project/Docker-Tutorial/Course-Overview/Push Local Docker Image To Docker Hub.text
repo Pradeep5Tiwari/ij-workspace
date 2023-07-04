@@ -1,0 +1,27 @@
+Pro tip
+You can push a new image to this repository using the CLI
+
+docker tag local-image:tagname new-repo:tagname
+docker push new-repo:tagname
+Make sure to change tagname with your desired image repository tag.
+
+Example:
+pradeeptiwari@Pradeeps-MBP productCatalogue % docker images
+REPOSITORY                 TAG       IMAGE ID       CREATED       SIZE
+vsworkspace                latest    89d89e8ccb20   3 hours ago   559MB
+nginx                      1.25      c42efe0b5438   2 weeks ago   135MB
+docker/welcome-to-docker   latest    b1eb53af308a   8 weeks ago   13.6MB
+
+pradeeptiwari@Pradeeps-MBP productCatalogue % docker tag vsworkspace:latest pradeep5tiwari/my-repository:myfirstimagepush
+pradeeptiwari@Pradeeps-MBP productCatalogue % docker push pradeep5tiwari/my-repository:myfirstimagepush
+here:
+vsworkspace ---> is the image name
+latest ---> is the tag name
+pradeep5tiwari ---> is the username for docker hub
+my-repository ---> is the docker hub repository name
+myfirstimagepush ---> is the tag name for repository
+
+
+
+
+

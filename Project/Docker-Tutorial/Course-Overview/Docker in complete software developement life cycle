@@ -1,0 +1,35 @@
+We have seen each component in software development life cycle.
+Now we would see how docker gets fit into complete software development and deployment process with lots of other tech.
+
+
+Lets consider a scenario that you are developing a simple javascript application in your local development environment.
+And your javascript application uses mongoDB database and instead of installing it on your computer you download a docker
+container from docker hub. So, you connect your javascript application with the mongoDB and you start the developing.
+
+Now lets say you developed the application first version of the application locally and now you want to test it. or
+you want to deploy it on the development environment where a tester in your team is going to test it. So, you commit
+your javascript application into git or some other version control system that will trigger CI(Continuous Integration)
+a jenkins build or whatever you have configured and jenkins build will produce artifacts from your application.
+
+So, first you will build your java script application and then create a docker image out of that javascript artifact.
+So, what happen to this docker image once it gets created by jenkins build it gets pushed to a private docker repository.
+So, usually in company you would have a private repository because you don't want to other people to have access to
+your images so you push it there. And now is the next step could be configured on jenkins or some other scripts or
+tools that docker image has to be deployed on a development server. So, you have development server that pulls the image
+from the private repository and your javascript application image and then pulls mongoDB that your javascript application
+depends on from a docker hub.
+
+And now you have two containers ones is your custom container and publicly available mongoDB container running on dev
+server and they talk to each other. you have to configure it and they communicate to each other and run as application.
+
+So, now if a tester for example or developer logs in to dev server they will be able to test the application.
+So, this is the simplified workflow how Docker will work in a real life development process.
+
+So, we have learnt till now
+
+What Images are?
+How to run a container?
+How containers work?
+How to create your own docker image and run it as a container.
+
+

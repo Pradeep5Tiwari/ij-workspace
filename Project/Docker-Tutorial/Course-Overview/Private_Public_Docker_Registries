@@ -1,0 +1,52 @@
+Public and Private Registries:-
+
+We have learnt about Docker Hub which is a Largest Public Registry which mean those images that we used are visible
+and available for public but when company creates their own images of their own applications and of-course they don't
+want it to be available publicly. So, for that there are private docker registries and there are many of them and almost
+all cloud providers have service for private docker registry.
+
+Example:
+AWS ECR for Elastic Container Registry,
+GCP, AZURE and all have their own docker registry.
+Nexus - which is a popular artifact storage service has docker registry even Docker Hub has private Docker Registry.
+
+You can create your own private/public docker registry and upload images there.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

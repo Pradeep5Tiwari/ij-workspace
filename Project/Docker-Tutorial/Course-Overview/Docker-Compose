@@ -1,0 +1,94 @@
+Docker Compose: For running multiple containers.
+In last session
+1) First we created the network called mongo-network where these 2 container can talk to each other.
+2) Then we created and stated two docker container named 1) mongodb and 2) mongo-express.
+
+reference given in attached image:docker-commands-screenshot.png.
+
+So, above ways to start the container might be little tedious and we don't want to run the above commands all the time
+on the command line or terminal specially if we have bunch of docker container to run. You probably want to automate it.
+So, there is a tool that makes running multiple docker container with all these configuration much easier than docker
+run commands and that is "docker compose".
+
+we would create "mongo-docker-compose.yaml" file.
+
+So, basically with mongo-docker-compose.yaml file we can take the whole commands with given configuration and map it into
+a file. So, that we have structured commands. Example: Lets say if we have 10 docker container that we want to run for
+out application and they want to talk to each other then you can basically write run commands for each container in a
+structured way in a docker compose file.
+
+Example
+
+mongo-docker-compose.yaml
+==================================================
+  version: '3'
+  services:
+    mongodb:
+      image: mongo
+      ports:
+       - 27017:27017
+      environment:
+       - MONGO_INITDB_ROOT_USERNAME=mongoadmin
+       - MONGO_INITDB_ROOT_PASSWORD=secret
+    mongo-express:
+      image: mongo-express
+      ports:
+       - 8080:8081
+      environment:
+       - ME_CONFIG_MONGODB_ADMINUSERNAME=mongoadmin
+       - ME_CONFIG_MONGODB_ADMINPASSWORD=secret
+       - ME_CONFIG_MONGODB_SERVER=mongodb
+==================================================
+So, docker compose takes care of creating a common network.
+Example: mongo.yaml
+
+Now how to start the container using docker compose yaml file?
+Lets first go to the command line and type below command
+Example: docker-compose -f mongo.yaml up
+
+Note: docker-compose is already installed with docker package.
+"-f" a switch to denote file.
+"up" a switch which says what you want to do with this yaml file so its 'up' which will start all the containers.
+
+If you check the logs (file: docker-compose-logs) you would notice that once we hit the above "docker-compose -f mongo.yaml up" command it would
+by default create its network "registration_default" with two container named registration-mongo-express-1 and registration-mongodb-1
+
+Example:
+pradeeptiwari@Pradeeps-MBP Registration % docker-compose -f mongo.yaml up
+[+] Building 0.0s (0/0)
+[+] Running 3/3
+ ✔ Network registration_default            Created                                                                                                                     0.0s
+ ✔ Container registration-mongo-express-1  Created                                                                                                                     0.0s
+ ✔ Container registration-mongodb-1        Created                                                                                                                     0.1s
+Attaching to registration-mongo-express-1, registration-mongodb-1
+
+Note: One important thing to note about container is that whenever you restart the container, everything you created
+inside the container will gone. There won't be any data. like database configuration or any other which we set earlier.
+
+Now how to stop the docker-compose container as we started earlier. So for that we would give below command:
+Example:
+pradeeptiwari@Pradeeps-MBP registration % docker-compose -f mongo.yaml down
+[+] Running 3/2
+ ✔ Container registration-mongo-express-1  Removed                                                                                  0.2s
+ ✔ Container registration-mongodb-1        Removed                                                                                  0.2s
+ ✔ Network registration_default            Removed                                                                                  0.0s
+
+If you check docker desktop engineer there won't be any default created network along with container left.
+So, till now we learnt about what docker-compose is and how to use it.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

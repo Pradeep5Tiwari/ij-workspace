@@ -1,0 +1,58 @@
+Dockerfile - create own images
+Companies create "custom images for their applications"
+Question:- How we would create my own Docker Image for my application?
+Answer:- The use case for creating Docker-Image is that is when I am done with development and the application is ready
+and it has some features and we want to release it to the end users. So, we want to run it on a deployment server.
+
+And to make the deployment server process easier, once we deploy our application as docker container along with the
+database and other services that are also going to run as docker container. So,
+
+Question: How can we take out created, deployed application code and package it into Docker-Image?
+Answer: For that we need to create a "definition" of how to build an image from our application and then definition is
+written in file called "Docker-File". So, that's how it should be called. Creating a simple docker file is very easy.
+
+Example:- There are two step to create the Docker-Image from application as given below.
+1) We will write a "Docker-File" for Node.js application.
+2) Then "build a Docker-Image from this Docker-File.
+
+In this part we are going to take super simple "node.js" application that we prepared and we are going to write a
+"Docker-File" for that application to create "Docker-Image" out of it.
+
+Remember: A Docker image consists of layers.
+* Each instruction in the Dockerfile create one layer.
+* These layers are stacked and each one is a delta of the changes from the previous layer.
+
+Now if we would want to see the created images just execute the command "docker images" and you would see node-app
+image.
+Now we can use this node-app image just like other image downloaded from docker hub.
+Now we will go ahead and run the container from this node-app image and make sure that the application inside is
+actually working. So we are going to do execute command: "docker run node-app:1.0 OR we can add add -d flag parameter
+to start in detach mode and also we want to expose the port with -p flag right we want to be able to access the
+node application (like "docker run -d -p node-app:1.0") from localhost and we know that the application inside the
+container will start on port 3000 because that's what we have defined here so the application itself will be running on
+port 3000. So, that's inside the container. And we can bind it to the whatever port we want on localhost and we can do
+3000 the same as in the container. So, this is the host port and this is container port and now if we execute
+command: "docker run -d -p 3000:3000 node-app:1.0" then if we do docker ps then we should see our node app running on
+port 3000 and now we can check / test in the browser we can hit url: http://localhost:3000 and we would see the message
+"Welcome to my first node js application" which we have given in server.js application.
+
+We can even check the logs with command: "docker logs node-app-id" and the output would be given below which we have set
+in the server.js application like: "Application listening on port 3000"
+
+So Write DockerFile ---> Build Docker Image ---> Run as Docker container
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

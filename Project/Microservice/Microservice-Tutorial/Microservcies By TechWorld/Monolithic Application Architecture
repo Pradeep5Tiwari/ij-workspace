@@ -1,0 +1,51 @@
+******************************************* Microservices: What Why and How? ****************************************
+#Questions:
+            What is monolithic Application Architecture is?
+            What were some challenges and why Microservices?
+            Why industry slowly moved to microservice architecture?
+            What are Microservices Architecture is?
+            What are the benefits and Best Practices?
+            What are the challenges of Microservices?
+            How Communications between microservices?
+            What are the different ways to manage code for microservices application - MonoRepo Vs PolyRepo?
+
+# Monolith architecture and its downsides
+Monolith: All components are part of a single unit.
+Example: Any application could have these many parts/features/modules within one single application like.
+            User-Authentication
+            Shopping-Cart
+            Product Catalogue
+            Notifications
+            Payment
+So, all the code for above functionalities would be in 1 codebase is part of 1 MONOLITHIC application.
+
+#Downsides
+    Everything is developed, deployed and scaled as 1 unit.
+    Application must be written in 1 tech stack in 1 single runtime.
+    Teams need to be careful to not affect each other's work.
+    1 single artifact, so you must redeploy the entire application on each update.
+
+PS: So this was standard way of developing applications.
+
+#Challenges of monolithic application architecture.
+    1) Application is too large and complex.
+    2) Parts are more tangled into each other.
+    3) You can only scale the entire application, instead of specific service. This in turn the higher infrastructure costs.
+    Lets take an example if your payment service is using third party service module which built on java 1.8 version while
+    notification service/module needed same module but require the java version 1.7 so, you have to pick one or other since
+    its single application.
+    4) Difficulty if services need different dependency versions.
+    5) The release process of monolithic application takes longer.
+    6) On every change, the entire application needs to be tested.
+    7) Entire application needs to be built and deployed.
+    8) Bug in any module can potentially bring down the entire application.
+
+And the answer to all these issues was a microservices architecture.
+
+
+
+
+
+
+
+

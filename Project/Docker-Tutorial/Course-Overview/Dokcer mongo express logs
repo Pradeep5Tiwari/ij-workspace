@@ -1,0 +1,11 @@
+pradeeptiwari@Pradeeps-MacBook-Pro Registration % docker logs 26c063a9f199f0066318130692b33202bde567bcabdc867978bdb842d3f5a58c
+Welcome to mongo-express
+------------------------
+
+
+(node:7) [MONGODB DRIVER] Warning: Current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+Mongo Express server listening at http://0.0.0.0:8081
+Server is open to allow connections from anyone (0.0.0.0)
+basicAuth credentials are "admin:pass", it is recommended you change this in your config.js!
+
+

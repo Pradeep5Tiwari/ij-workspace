@@ -1,0 +1,76 @@
+Question: What is the difference between Docker Vs VirtualMachine?
+Answer: Earlier we said Docker is a virtualization tool just like virtual machine. And virtual machine has been around
+for quite long time so why did docker become so popular?
+
+Why is Docker so widely used?
+What advantages it have over Virtual Machines?
+What is the difference?
+
+Let's first understand that How an OS is made up?
+-> Any Operating System have 2 main layers
+1st is OS Kernel and
+2nd is OS Applications Layer.
+
+* Kernel is the core of every operating system.
+* Kernel interacts between hardware & software component.
+
+Kernel:- is a part that communicate with hardware component like CPU, memory, Storage etc. So when you have physical
+machine with all these resources and when you install OS on that physical machine the kernel of the OS will actually
+will be the one who talking to the hardware component and allocate resources like CPU, Memory and storage etc to the
+applications then running on that operating system and those applications are the part of the applications layers and
+they run on top of the kernel layer. So kernel is kind of middleman between the applications that you see when you interact
+with your computer and the underlined hardware of your computer.
+
+Now Docker and virtual machine both are virtualization tools and now the question is which part of the OS actually they
+virtualize? And that's where the main difference between docker and virtual machines actually lie.
+So, Docker virtualize the "applications layer" --> This means when you run a docker container it actually contains the
+applications layer of the OS and some other applications installed on top of that application layer and this could be
+JRE or python etc and it uses the kernel of the host because it does not have its own kernel.
+
+The virtual machine on other hand has the applications layer and its own kernel. So, it virtualizes the complete OS.
+which means that when you download the virtual machine image on your host it does not use the host kernel, It actually
+puts up its own. So, this is what the difference between Docker and Virtual Machine.
+
+The size of the docker packages or images are much smaller because they just have to implement one layer of the OS.
+So, docker images are usually a couple of megabytes large and virtual machine images on the other hand can be a couple
+of gigabytes and this means when working with docker you actually save a lot of disk space. You can run and start docker
+containers much faster than virtual machines because virtual machine has to put up a kernel everytime it starts while
+docker container just reuses the host kernel and you just start the application layer on top of it. so while virtual
+machine needs couple of minute to start up docker containers usually startup in few milliseconds.
+
+The third difference is compatibility so you can run virtual image of any OS on any other OS host so on window machine
+you can run linux virtual machine but you can not do that with docker at least directly. So what is the problem here?
+Lets say you have window OS with window kernel and its application layers and you wants to run linux based docker image
+directly on that windows host, the problem here is that linux based docker image cannot use the window kernel
+it would not need a linux kernel to run because you can run a linux application on a windows kernel. So, that's kind of
+of an issue with docker however when you are developing on windows or mac os you want to run various services because
+most containers for the popular services are actually linux based. Also interesting to know that docker was originally
+written and built for linux but later docker actually made and update and developed what's called Docker desktop for
+windows and mac which made it possible to run linux based containers on windows and mac computers as well. So the way it
+works is that docker desktop uses a hypervisor layer with lightweight linux distribution on top of it to provide the
+needed linux kernel and this way make running linux based containers possible on windows and mac OS.
+
+So, this means for local development as an engineer you would install Docker Desktop on your windows OR Mac OS computer
+to run Linux based images which as I mentioned most of the popular services databases etc are mostly linux based.
+
+In one line differences between Docker and Virtual Machine:
+
+1) Docker uses virtualization at Application layers and it uses host machine OS kernel. While
+   Virtual machine uses virtualization at "Applications" and "OS Kernel" Layers, It does not use host machine OS kernel.
+
+2) Size: Docker images are much smaller than virtual machine images.
+3) Speed: Docker containers start and run much fast because they puts the OS kernel and run application top of it.
+4) Compatibility: Virtual machine of any OS can run on any OS host. But Linux based docker image might not be compatible
+   for window based kernel.
+
+
+
+
+
+
+
+
+
+
+
+

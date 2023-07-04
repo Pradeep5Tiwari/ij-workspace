@@ -1,0 +1,31 @@
+Docker Basic Commands:
+
+1. docker pull redis: It will download the redis docker image from docker hub. Initially it checks in local and if it does
+                   not find then it will redirect to docker hub.
+
+2. docker images: It will display the list of existing docker images in our machine.
+
+3. docker run redis: After you have downloaded the redis image into your machine and now we want redis to be running so that my application
+can connect to it. So I have to create the container of that redis images. That will make it possible to connect to the
+redis application.
+
+"docker run" This command will combine "pull" and "start" command.
+
+4. docker ps: This command would list the running container.
+
+5. docker run -d vsworkspace: This command would run the container in de-attached mode and it would create the new container
+even if you have existing container. -d switch will run in de-attached mode and one hashcode id will be generated corresponding
+to container.
+
+6. docker stop container_id: This command will simply stop the container.
+7. docker start container_id: This command will start the container.
+
+8. docker ps -a: This command would lists the running and stopped container.
+
+
+
+
+
+
+
+

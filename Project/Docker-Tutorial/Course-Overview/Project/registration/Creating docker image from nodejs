@@ -1,0 +1,74 @@
+Now we will build our own docker image from node js javascript application.
+
+Now consider following scenario where
+1) we have developed the application feature.
+2) We have tested it.
+3) And now we are ready to deploy it.
+
+To deploy application: your application should be package into its own docker container. This means that we are going
+to build an docker image from our javascript node js backend application and prepare it to be deploy it in some environment.
+
+JavaScript Backend Application --------------------->DockerFile---------------------------> DockerImage
+
+Jenkins --> Builds JS Application & Create DockerImage but here using CLI command we are generating the image from Dockerfile.
+
+Dockerfile: In order to build an image from application we have to copy the  contents / copy artifact (jar,war,bundle.js) into
+dockerfile and we are going to configure it.
+As we said dockerfile is a blueprint for creating docker image.
+So, very first line of every dockerfile starting from syntax "FROM image". So, whatever image you are building are basically
+based on another image. In our example we have javascript application with node js backend so we are gonna need node
+inside of our container.so that it can run our node application.
+
+
+In Dockerfile we can optionally define environment variable. Dockerfile is also the part of project just like any other
+file in the project workspace.
+Using RUN - we can execute any Linux based command. not on your laptop/pc.
+All of the command will be affecting the container environment not my local machine environment.
+
+FROM node ---> install node --> Node is installed because of this command.
+ENV MONGO_DB_USERNAME=mongoadmin \ --> setting environmental variable username as 'mongoaadmin'
+    MONGO_DB_PWD=secret            --> setting environmental variable password as 'secret'
+RUN mkdir -p /home/app             --> directory is created inside of the container.
+COPY . /home/app                   --> copy current folder files to /home/app --> COPY command executes on the HOST machine!
+CMD ["node", "/home/app/server.js"]          --> start the app with "node server.js" CMD = entrypoint command.
+
+
+Note: Dockerfile name must be "Dockerfile" without any extension.
+If you have modified your Dockerfile then again you have to re-build the image.
+When we run the docker build command to create the image we provide .(dot) to represent a current directory.
+Example: docker build -t my-registration .
+Here above . (dot) second parameter is basically the location of Dockerfile because we want to tell the docker build an image using this
+Dockerfile and in this case we are in the same directory as the Dockerfile presented. So we put . (dot) to represent a
+current directory.
+-t switch give a name to the container called my-registration.
+
+Now to run the generated dockerImage we have to hit the below command
+docker run my-registration:1.0
+
+Note: some container does not have bin/bash so we can use /bin/sh instead.
+
+Generally we don't keep Dockerfile and mongo.yaml configuration file along with project files.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

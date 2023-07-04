@@ -1,0 +1,39 @@
+*********************************************** DOCKER ****************************************************************
+1) What is,how and why of Docker?
+
+i) Understand the WHAT?
+    What is Docker?
+    What problems does it solve?
+
+ii) Understand the HOW?
+    How software development before and after Docker?
+
+iii) Understand the WHY?
+    Why Docker is such a big deal?
+    Why it has become so popular?
+    Why we use it in IT project?
+
+2) Docker Vs Virtual Machine?
+    As a part of virtualization solution Docker being an improvement over virtual machine as next evolution steps.
+    Understand the difference between Docker and VM.
+    Benefits of Docker?
+
+3) Install the Docker locally?
+4) Images vs Containers?
+5) Private and Public Registries?
+6) Run Containers
+    Pull and run the containers from the public repositories
+    Port binding, Detached Mode etc.
+
+7) Create own image (DockerFile)
+    Syntax and concepts of Dockerfile
+    We will dockerized a Node.js app
+
+8) Main Docker Commands
+    Learn Docker Commands: pull, run, start, stop, logs, build
+
+9)  Image Versioning.
+10) Docker Workflow Big Picture.
+
+
+

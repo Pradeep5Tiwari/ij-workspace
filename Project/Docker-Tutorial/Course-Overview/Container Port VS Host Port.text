@@ -1,0 +1,35 @@
+Note: Docker can run the same application with two different version.
+      Example: If we run the redis with two different version then we can run in docker but the port in which redis
+      listening would be the same like 6379/tcp.
+
+Question: So now as we said that redis two different version can run on same port then how it works and why we don't have
+any conflicts while running redis with two different version?
+
+Answer: Container Port VS Host Port:
+* Multiple container can run in your host machine.
+* But your pc/laptop/host machine has only certain ports available.
+* Conflict when same port on host machine: Which would say the port bound or already in used and you cannot use it.
+However you can have two container like in {screenshot:Container Port Vs Host Port.png} 2nd and 3rd container both are
+listening to to port 3000 which is absolutely okay as long as you bind them to two different ports from your pc/laptop/host machine.
+
+So, once the port binding between 'host machine' and 'container' is already done. You can actually connect to the running
+container using the port of the host.
+Example: Let assume if we have some url like some-app://localhost:3001
+
+Host---------> Port 3001
+                   |
+Container----> Port 3000
+
+Host will then know how to fold the request to the container using the port binding.
+Command to do port binding between host machine & container port: docker run -p 6000:6379
+
+6000 --> is the local host machine port
+6779 --> is the container port
+
+Now if you run command: "docker ps" then you would see that our local host machine port is bind to container port.
+
+
+
+
+
+

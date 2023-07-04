@@ -1,0 +1,22 @@
+Registry Vs Repository
+
+Docker Registry:- A Service providing storage and can be hosted by third party, like AWS or by yourself.
+                  Collection of repositories.
+
+Docker Repository:- Collection of related images with same name but different versions.
+
+Example: AWS ECR(Elastic Container Registry) is a registry so basically that's a service that provides storage for images
+and inside that registry you can have multiple repositories for all your different application images so each application
+gets repository its own and in that repository you can store different image versions or tags of the same application.
+And in the same way. Docker hub is a registry its service for storing images and on docker hub you can have your public
+repositories for storing images that will be accessible publicly. or you can have private repositories for different
+applications and again you can have repository dedicated for each application.
+
+Amazon Elastic Container Registry (ECR) is a fully managed Docker container registry that makes it easy to store, share,
+and deploy container images.
+
+
+
+
+
+

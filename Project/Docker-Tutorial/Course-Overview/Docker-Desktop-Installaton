@@ -1,0 +1,19 @@
+Docker Desktop Installation:- Install Docker from the official docker website and follow the installation guide.
+https://docs.docker.com/desktop/install/mac-install/
+
+Docker Desktop Includes:
+Docker Engine:-
+* A server with long running daemon process "dockerd"
+* Manages images and containers.
+
+Docker CLI client:-
+* Command Line Interface (docker) to "interact with Docker Server"
+* Execute Docker commands to start/stop /... containers
+
+Docker GUI Client:-
+* To manage your images and containers with a GUI (Graphical User Interface).
+* It is helpful when you don't wants to work with command Line based interface and wants to have nice user friendly UI.
+
+
+
+

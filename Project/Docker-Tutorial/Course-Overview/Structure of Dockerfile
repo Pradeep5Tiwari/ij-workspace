@@ -1,0 +1,96 @@
+'Structure of Dockerfile:
+'* Dockerfile start from the parent image or base image.
+'* Its Docker image that your image is based on.
+'* You choose the base image, depending on which tools you need to have available.
+
+'So, for javascript application you would have node based image.
+'    for java based application you would have java runtime JRE based image.
+'And we define the base image using a directive in Docker file called "FROM".
+
+'Example:
+' FROM:
+' * Dockerfiles "must begin" with a FROM instruction.
+' * Build this image from specified image.
+' If you go back to docker hub search for node you would see that we have image which has node and npm installed inside.
+' and base images are just like other images
+
+'Multi-Layer Approach:
+
+'            Image           --->                 my-app
+'Image       node             Image              node
+'node        ...              my-app             ...
+'            alpine :3:16    --->                alpine:3:16
+
+' Every image consists of multiple image layers and this makes docker so efficient, because image layers can be cached.
+
+FROM node:18.13.0  '--> Build this image from specified image.'
+
+'So, this is our base image and our first directive in docker file'
+'Again above line will make sure that when our node.js application starts in container it will have node and npm command
+'available inside to run our application.
+
+'Now if we start our application with this command we will see that we get error because we need to install dependencies
+'of an application. We just have one dependencies which is press library which means we would have to execute npm install
+'command which will check the package.json file and read all the dependencies defined inside and install them locally in
+'node_modules folder.
+
+
+
+COPY package.json /app/  '--> COPY <src> on our machine  <dest> in the container'
+'that's the another directive where we take the files from out local computer and we copy and paste them into container.
+'and that's the directive called "COPY" and you can copy individual files like package.json into container and we can say
+'where in container on which location in the file system it should be copied to folder lets say /app/ inside the container
+
+'We can also copy our application code inside obviously to run the application, we can copy whole src - source directory
+'so we have multiple files inside.
+COPY src /app/
+
+'In docker to change directory we have directive called "WORKDIR" which is equivalent of changing directory command CHDIR
+
+WORKDIR /app/ '--> THis sets as default path for this location. which is root location and then inside app directory'
+
+RUN npm install '--> Will execute any command in a shell inside the container environment.
+' Above command will download the dependencies inside the container and create a node modules folder inside the container
+'before the application gets started. So thin of container as an isolated environment and it has simple linux OS with
+'node and npm installed and we are executing npm install however we need application code inside the container as well.
+'So, we need server.js inside and we need package.json because that's what npm command will need to actually read the
+'dependencies and
+
+CMD ["node", "server.js"] 'That instruction that to be executed when a Docker container starts'
+    ' There can only be one "CMD" instruction in a Dockerfile.
+
+
+' So this is the complete docker file which will create the docker image for our node js application which we can then
+'start a container.
+
+'* Build the Image: Now we have dockerfile now its time to build the docker image from docker file.
+
+'Dockerfile -------> Dockerimage
+
+'So now we have definition in docker file its time to actually build the image from this definition.
+' We can execute a Docker command to build an image.
+'command: "docker build -t node-app:1.0 .
+
+'here docker --> command of docker
+'     build  --> command to build
+'     -t     --> flag/switch to give a name to image
+'    node-app --> name of the image
+'    1.0      --> image with tag/version number
+=====================================================
+Dockerfile Structure Sample:
+FROM openjdk:8
+WORKDIR /app
+COPY target/productCatalogue-0.0.1-SNAPSHOT.jar /app/productCatalogue-0.0.1-SNAPSHOT.jar
+EXPOSE 8080
+CMD ["java", "-jar", "/app/productCatalogue-0.0.1-SNAPSHOT.jar"] &&\
+docker build -t productCatalogue . &&\
+docker run -p 8080:8080 productCatalogue &&\
+
+#Note: Make sure to add "&&\" to link the run command. Like we have added otherwise it shows error like "Unknown instruction: DOCKER"
+
+
+
+
+
+
+
